@@ -1,0 +1,13 @@
+header, footer {
+    background-color: rgba(var(--bs-dark-rgb));
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.nav-color {
+    color: rgba(255, 255, 255, 0.5)
+}

@@ -1,0 +1,96 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model ListDemo
+
+<div class= "container">
+    <h1>@ViewBag.Lab</h1>
+    <h2>Список</h2>
+    <ol type="A">
+        @for(int i = 0; i < 5; i++)
+        {
+            <li>элемент @i списка</li>
+        }
+    </ol>
+    <h2>Форма</h2>
+    <form method="post">
+
+        <select asp-for="Id" class="form-select" name="selDemo"  asp-items="ViewBag.List">
+            
+        </select>
+
+
+
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+
+            <div class="col-sm-11">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check1" />Чек-бокс 1
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check2" />Чек-бокс 2
+                </div>
+            </div>
+            
+           
+            
+            <div class="row">
+                <div class="col-md-1">
+                    
+                </div>
+                <div class="col-md-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radios" value="radio1"/>Радио-1
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radios" value="radio2" />Радио-2
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radios" value="radio3" />Радио-3
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="row mb-3">
+                <label for="inputLogin" class="col-sm-1 col-form-label">Логин</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="inputLogin" placeholder="Введите электронную почту">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-1 col-form-label">Пароль</label>
+                <div class="col-sm-11">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+            
+
+        </div>
+    </form>
+
+</div>
+
+
+
+
+@{
+    ViewBag.Title = "Lab 1";
+}
