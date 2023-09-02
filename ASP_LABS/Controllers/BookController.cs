@@ -15,9 +15,10 @@ namespace ASP_LABS.Controllers
             _genreService = genreService;
         }
 
-        public async Task<ActionResult> Index(string genre,int pageNo)
+        [Route("{controller=Book}/{action=Index}/{genre}/{page=1}")]
+        public async Task<ActionResult> Index(string genre,int page)
         {
-            var bookResponse = await _bookService.GetBookListAsync(genre,pageNo);
+            var bookResponse = await _bookService.GetBookListAsync(genre,page);
             //список категорий
             var genreResponse = await _genreService.GetGenreListAsync();
             ViewBag.Genres = genreResponse.Data;

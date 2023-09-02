@@ -2,15 +2,19 @@
 @{
 	var request = ViewContext.HttpContext.Request;
 	var returnUrl = request.Path + request.QueryString.ToUriComponent();
-}
-<h1>Каталог Книг</h1>
 
+	System.Diagnostics.Debug.WriteLine(ViewContext.RouteData.Values.Count);
+}
+
+<h1>Каталог Книг</h1>
+<!-- Выбор жанра -->
 <div class="dropdown">
-	<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+	<a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 		@ViewBag.CurrentGenre
 	</a>
 
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+		<li><a class="dropdown-item" asp-controller="Book" asp-action="Index" asp-route-genre="all">All</a></li>
 		@foreach(var genre in ViewBag.Genres.Items)
 		{
 			<li><a class="dropdown-item" asp-controller="Book" asp-action="Index" asp-route-genre="@genre.NormalizedName">@genre.Name</a></li>
@@ -18,6 +22,7 @@
 	</ul>
 </div>
 
+<!-- Карточки -->
 <div class="row">
 	@foreach (var element in Model.Items)
 	{
@@ -38,6 +43,58 @@
 		</div>
 	}
 </div>
+
+
+
+<!-- Paginator -->
+<nav aria-label="...">
+	<ul class="pagination">
+		@if (Model.CurrentPage > 1)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-controller="Book" asp-action="Index" asp-route-genre="@ViewContext.RouteData.Values["genre"]" asp-route-page="@(Model.CurrentPage - 1)">Назад</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<span class="page-link">Назад</span>
+			</li>
+		}
+		@if (Model.CurrentPage > 1)
+		{
+		<li class="page-item">
+				<a class="page-link" asp-controller="Book" asp-action="Index" asp-route-genre="@ViewContext.RouteData.Values["genre"]" asp-route-page="@(Model.CurrentPage - 1)">@(Model.CurrentPage - 1)</a>
+		</li>
+		}
+		
+		<li class="page-item active" aria-current="page">
+			<span class="page-link">@Model.CurrentPage</span>
+		</li>
+		
+		@if (Model.CurrentPage < Model.TotalPages)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-controller="Book" asp-action="Index" asp-route-genre="@ViewContext.RouteData.Values["genre"]" asp-route-page="@(Model.CurrentPage + 1)">@(Model.CurrentPage + 1)</a>
+			</li>
+		}
+		@if (Model.CurrentPage < Model.TotalPages)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-controller="Book" asp-action="Index" asp-route-genre="@ViewContext.RouteData.Values["genre"]" asp-route-page="@(Model.CurrentPage + 1)">Вперед</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<span class="page-link">Вперед</span>
+			</li>
+		}
+
+		
+
+	</ul>
+</nav>
 	
 	
 

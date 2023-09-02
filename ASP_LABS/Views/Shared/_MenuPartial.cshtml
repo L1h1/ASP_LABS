@@ -16,7 +16,7 @@
 <a class="navbar-brand" href="/Home">ASP LABS</a>
                 <div class="navbar-nav">
     <a class="nav-item nav-link active" asp-controller="Home" asp-action="Lab_1">ЛР 1 @(controller == "home" && action == "lab_1" ? "active" : "")</a>
-    <a class="nav-item nav-link" asp-controller="Book" asp-action="Index" asp-route-genre="all" asp-route-pageNo="1">Каталог @(controller == "book" && action == "index" ? "active" : "")</a>
+    <a class="nav-item nav-link" asp-controller="Book" asp-action="Index" asp-route-genre="all" asp-route-page="1">Каталог @(controller == "book" && action == "index" ? "active" : "")</a>
     <a class="nav-item nav-link" asp-area="Admin">Администрирование</a>
                 </div>
 

@@ -71,7 +71,8 @@ namespace ASP_LABS.Services.BookService
 
 
             result.Items = result.Items.Skip((pageNo - 1) * itemsPerPage).Take(itemsPerPage).ToList();
-
+            result.CurrentPage= pageNo;
+            result.TotalPages= pages;
 
 			return Task.FromResult(new ResponseData<ListModel<Book>>() {
                 Data= result 
