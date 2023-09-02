@@ -1,7 +1,16 @@
+using ASP_LABS.Services.BookService;
+using ASP_LABS.Services.GenreService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+//Adding lab2 services
+builder.Services.AddScoped<IGenreService,MemoryGenreService>();
+builder.Services.AddScoped<IBookService,MemoryBookService>();
+
 
 var app = builder.Build();
 

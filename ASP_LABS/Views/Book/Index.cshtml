@@ -1,0 +1,43 @@
+﻿@model ListModel<Book>
+@{
+	var request = ViewContext.HttpContext.Request;
+	var returnUrl = request.Path + request.QueryString.ToUriComponent();
+}
+<h1>Каталог Книг</h1>
+
+<div class="dropdown">
+	<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+		@ViewBag.CurrentGenre
+	</a>
+
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+		@foreach(var genre in ViewBag.Genres.Items)
+		{
+			<li><a class="dropdown-item" asp-controller="Book" asp-action="Index" asp-route-genre="@genre.NormalizedName">@genre.Name</a></li>
+		}
+	</ul>
+</div>
+
+<div class="row">
+	@foreach (var element in Model.Items)
+	{
+		<div class="col-md-4 g-5">
+			<div class="card" style="width: 18rem;">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">@element.Title</h5>
+					<p class="card-text">@element.Description</p>
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<a asp-controller="Cart" asp-action="Add" asp-route-id="@element.Id" asp-route-returnurl="@returnUrl" class="btn btn-primary">Купить</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+	
+	
+

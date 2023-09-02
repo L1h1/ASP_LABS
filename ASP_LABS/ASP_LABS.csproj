@@ -10,4 +10,8 @@
     <Folder Include="Areas\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ASP_LABS.Domain\ASP_LABS.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
