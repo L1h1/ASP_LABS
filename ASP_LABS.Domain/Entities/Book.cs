@@ -10,18 +10,9 @@ namespace ASP_LABS.Domain.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Description { get
-            {
-                if (Genres == null) return "...";
-                var result = "";
-                foreach(var genre in Genres)
-                {   
-                    result += $" {genre.Name}";
-                }
-                return result;
-            }
-        }
-        public List<Genre>? Genres { get; set; }
+        public string Description { get;set; }
+       
+        public Genre Genre { get; set; }
 
         public double Price { get; set; }
 

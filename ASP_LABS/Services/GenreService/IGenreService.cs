@@ -1,4 +1,4 @@
-﻿using ASP_LABS.Domain;
+﻿using ASP_LABS.Domain.Entities;
 using ASP_LABS.Domain.Models;
 
 namespace ASP_LABS.Services.GenreService
