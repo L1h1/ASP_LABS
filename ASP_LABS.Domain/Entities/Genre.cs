@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ASP_LABS.Domain.Entities
@@ -17,7 +18,7 @@ namespace ASP_LABS.Domain.Entities
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? NormalizedName { get; protected set; /*required for EF*/  }
-
-        public List<Book>? Books { get; set; }
+		[JsonIgnore]
+		public List<Book>? Books { get; set; }
     }
 }

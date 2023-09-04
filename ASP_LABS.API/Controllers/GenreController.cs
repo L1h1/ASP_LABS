@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
+using ASP_LABS.API.Services.GenreService;
 
 namespace ASP_LABS.API.Controllers
 {
@@ -14,24 +15,27 @@ namespace ASP_LABS.API.Controllers
     [ApiController]
     public class GenreController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IGenreService _service;
 
-        public GenreController(AppDbContext context)
+        public GenreController(IGenreService service)
         {
-            _context = context;
+			_service = service;
         }
 
         // GET: api/Genre
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Genre>>> GetGenreSet()
         {
-          if (_context.GenreSet == null)
-          {
-              return NotFound();
-          }
-            return await _context.GenreSet.ToListAsync();
-        }
+            var response = await _service.GetGenreListAsync();
+            
+            if (!response.Success)
+            {
+                throw new Exception(response.ErrorMessage);
+            }
 
+            return response.Data;
+        }
+/*
         // GET: api/Genre/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Genre>> GetGenre(int id)
@@ -119,6 +123,6 @@ namespace ASP_LABS.API.Controllers
         private bool GenreExists(int id)
         {
             return (_context.GenreSet?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        }*/
     }
 }

@@ -10,6 +10,7 @@ namespace ASP_LABS.API.Data
 		public DbSet<Genre> GenreSet { get; set; }
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 		{
+			this.ChangeTracker.LazyLoadingEnabled = false; //anti-recursion
 			Database.EnsureCreated();
 		}
 
