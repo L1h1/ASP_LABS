@@ -8,10 +8,16 @@ namespace ASP_LABS.Domain.Entities
 {
     public class Genre
     {
+        public Genre() { }
+        public Genre(string name)
+        {
+            Name = name;
+            NormalizedName = name.ToLower().Replace(' ', '-');
+		}
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string NormalizedName { get { return Name.ToLower().Replace(' ', '-'); } }
+        public string? Name { get; set; }
+        public string? NormalizedName { get; protected set; /*required for EF*/  }
 
-        public List<Book> Books { get; set; }
+        public List<Book>? Books { get; set; }
     }
 }

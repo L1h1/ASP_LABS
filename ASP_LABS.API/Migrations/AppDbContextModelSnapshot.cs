@@ -23,7 +23,6 @@ namespace ASP_LABS.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GenreId")
@@ -53,7 +52,9 @@ namespace ASP_LABS.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

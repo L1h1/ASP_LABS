@@ -12,7 +12,6 @@ builder.Services.AddSwaggerGen();
 
 
 var connStr = builder.Configuration.GetConnectionString("SqliteConnection");
-System.Diagnostics.Debug.WriteLine(connStr);
 string dataDirectory = String.Empty;
 connStr = String.Format(connStr, dataDirectory);
 
@@ -22,6 +21,8 @@ builder.Services.AddScoped<AppDbContext>(s => new AppDbContext(options));
 
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,4 +37,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+await DbInitializer.SeedData(app);
+
+
 app.Run();
+

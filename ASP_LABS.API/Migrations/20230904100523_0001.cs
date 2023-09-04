@@ -16,7 +16,8 @@ namespace ASP_LABS.API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    NormalizedName = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,7 +31,7 @@ namespace ASP_LABS.API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
                     GenreId = table.Column<int>(type: "INTEGER", nullable: false),
                     Price = table.Column<double>(type: "REAL", nullable: false),
                     ImagePath = table.Column<string>(type: "TEXT", nullable: true)

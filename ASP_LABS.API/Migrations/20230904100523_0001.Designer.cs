@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP_LABS.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230904085831_0001")]
+    [Migration("20230904100523_0001")]
     partial class _0001
     {
         /// <inheritdoc />
@@ -26,7 +26,6 @@ namespace ASP_LABS.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GenreId")
@@ -56,7 +55,9 @@ namespace ASP_LABS.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
