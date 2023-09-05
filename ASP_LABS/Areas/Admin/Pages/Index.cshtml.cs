@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.Services.BookService;
+using ASP_LABS.Domain.Models;
 
 namespace ASP_LABS.Areas.Admin
 {
@@ -19,13 +20,14 @@ namespace ASP_LABS.Areas.Admin
         {
             _service = service;
         }
+		[BindProperty]
+		public ListModel<Book> Book { get;set; } = default!;
 
-        public IList<Book> Book { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNo=1)
         {
-            var response = await _service.GetBookListAsync("all");
-            Book = response.Data.Items;
+
+            var response = await _service.GetBookListAsync("all",pageNo);
+            Book = response.Data;
 
 
         }

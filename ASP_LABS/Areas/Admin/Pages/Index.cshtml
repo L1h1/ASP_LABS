@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{pageNo=1}"
 @model ASP_LABS.Areas.Admin.IndexModel
 
 @{
@@ -14,22 +14,23 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Title)
+                @Html.DisplayNameFor(model => model.Book.Items[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Description)
+				@Html.DisplayNameFor(model => model.Book.Items[0].Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Price)
+				@Html.DisplayNameFor(model => model.Book.Items[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].ImagePath)
+				@Html.DisplayNameFor(model => model.Book.Items[0].ImagePath)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Book) {
+		@foreach (var item in Model.Book.Items)
+		{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -52,3 +53,56 @@
 }
     </tbody>
 </table>
+
+
+
+
+<!-- Paginator -->
+<nav aria-label="...">
+	<ul class="pagination">
+		@if (Model.Book.CurrentPage > 1)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-area="Admin" asp-page="/Index" asp-route-pageNo="@(Model.Book.CurrentPage - 1)">Назад</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<span class="page-link">Назад</span>
+			</li>
+		}
+		@if (Model.Book.CurrentPage > 1)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-area="Admin" asp-page="/Index" asp-route-pageNo="@(Model.Book.CurrentPage - 1)">@(Model.Book.CurrentPage - 1)</a>
+			</li>
+		}
+
+		<li class="page-item active" aria-current="page">
+			<span class="page-link">@Model.Book.CurrentPage</span>
+		</li>
+
+		@if (Model.Book.CurrentPage < Model.Book.TotalPages)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-area="Admin" asp-page="/Index" asp-route-pageNo="@(Model.Book.CurrentPage + 1)">@(Model.Book.CurrentPage + 1)</a>
+			</li>
+		}
+		@if (Model.Book.CurrentPage < Model.Book.TotalPages)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-area="Admin" asp-page="/Index" asp-route-pageNo="@(Model.Book.CurrentPage + 1)">Вперед</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<span class="page-link">Вперед</span>
+			</li>
+		}
+
+
+
+	</ul>
+</nav>
