@@ -12,7 +12,8 @@ namespace ASP_LABS.Domain.Entities
         public string Title { get; set; }
         public string? Description { get;set; }
        
-        public Genre Genre { get; set; }
+        public Genre? Genre { get; set; }
+        public int GenreId { get; set; }
 
         public double Price { get; set; }
 

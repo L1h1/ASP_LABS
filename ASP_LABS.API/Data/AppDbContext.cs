@@ -1,5 +1,6 @@
 ﻿using ASP_LABS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace ASP_LABS.API.Data
 {
@@ -17,7 +18,11 @@ namespace ASP_LABS.API.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-		}
+            modelBuilder.Entity<Genre>()
+       .Property(b => b.Name)
+       .HasField("_name")
+       .UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction);
+        }
 
 
 	}

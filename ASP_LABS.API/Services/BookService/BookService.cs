@@ -1,36 +1,47 @@
-﻿using ASP_LABS.API.Data;
+﻿using ASP_LABS.API.Controllers;
+using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace ASP_LABS.API.Services.BookService
 {
 	public class BookService : IBookService
 	{
 		private readonly int _maxPageSize = 20;
-		private AppDbContext _context;
+		private readonly AppDbContext _context;
+		private readonly IWebHostEnvironment _environment;
+		private readonly IConfiguration _config;
+		private readonly ILogger<BookService> _logger;
+		private readonly IHttpContextAccessor _contextAccessor;
 
-		public BookService(AppDbContext context) 
+		public BookService(AppDbContext context, IWebHostEnvironment env, IConfiguration configuration, ILogger<BookService> logger,IHttpContextAccessor httpContextAccessor) 
 		{
 			_context= context;
+			_environment = env;
+			_config = configuration;
+			_logger = logger;
+			_contextAccessor = httpContextAccessor;
 		}
 
-		public Task<ResponseData<Book>> CreateBookAsync(Book book)
+		public async Task<ResponseData<Book>> CreateBookAsync(Book book)
 		{
 			var response = new ResponseData<Book>();
-			
-			var set = _context.BookSet;
-			if(set.Any(b=>b.Id == book.Id))
+
+			if(_context.BookSet.Any(b=>b.Id == book.Id))
 			{
 				response.Success = false;
 				response.ErrorMessage = "Book with such Id already exists";
-				return Task.FromResult(response);
+				return response;
 			}
+			book.Genre =await _context.GenreSet.FindAsync(book.GenreId);
 
-			set.Add(book);
+            _context.Add<Book>(book);
 			_context.SaveChanges();
+			response.Data = book;
 
-			return Task.FromResult(response);
+			return response;
 		}
 
 		public Task<ResponseData<bool>> DeleteBookAsync(int id)
@@ -99,52 +110,80 @@ namespace ASP_LABS.API.Services.BookService
 
 		}
 
-		public Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
+		public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
 		{
 			var response = new ResponseData<string>();
-
-			if (formFile == null)
+			var book = await _context.BookSet.FindAsync(id);
+			if (book == null)
 			{
 				response.Success = false;
-				response.ErrorMessage = "no image provided";
-				return Task.FromResult(response);
+				response.ErrorMessage = "No item found";
+				return response;
 			}
-			if (!_context.BookSet.Any(b => b.Id == id))
+
+			var host = "https://" + _contextAccessor.HttpContext.Request.Host;
+			var imageFolder = Path.Combine(_environment.WebRootPath, "images");
+			if (formFile != null)
 			{
-				response.Success = false;
-				response.ErrorMessage = "no such book";
-				return Task.FromResult(response);
+				// Удалить предыдущее изображение
+				if (!String.IsNullOrEmpty(book.ImagePath))
+				{
+					var prevImage = Path.GetFileName(book.ImagePath);
+					try
+					{
+						File.Delete(imageFolder + "/" + prevImage);
+					}
+					catch(Exception ex)
+					{
+						response.Success = false;
+						response.ErrorMessage = ex.Message;
+						return response;
+					}
+				}
+				// Создать имя файла
+				var ext = Path.GetExtension(formFile.FileName);
+				var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
+
+
+				
+
+                // Сохранить файл
+                string filePath = Path.Combine(imageFolder, fName);
+                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(fileStream);
+                }
+
+                // Указать имя файла в объекте
+                book.ImagePath = $"{host}/images/{fName}";
+
+                await _context.SaveChangesAsync();
 			}
-
-
-			string path =$"/images/{_context.BookSet.Find(id).Title}.jpg";
-
-			//?????
-
-
-
+			response.Data = book.ImagePath;
+			return response;
 
 
 			throw new NotImplementedException();
 		}
 
-		public Task<ResponseData<Book>> UpdateBookAsync(int id, Book book)
+		public async Task<ResponseData<Book>> UpdateBookAsync(int id, Book book)
 		{
 			var response = new ResponseData<Book>();
+            book.Genre = await _context.GenreSet.FindAsync(book.GenreId);
 
-			var set = _context.BookSet;
-			if (!set.Any(b => b.Id == book.Id))
+
+            if (!_context.BookSet.Any(b => b.Id == book.Id))
 			{
 				response.Success = false;
 				response.ErrorMessage = "Nothing to update";
-				return Task.FromResult(response);
+				return response;
 			}
 			_context.Entry(book).State = EntityState.Modified;
 
-			set.Update(book);
+			_context.Update<Book>(book);
 			_context.SaveChanges();
-
-			return Task.FromResult(response);
+			response.Data = book;
+			return response;
 		}
 	}
 }

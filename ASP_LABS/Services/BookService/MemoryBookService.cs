@@ -24,13 +24,13 @@ namespace ASP_LABS.Services.BookService
         {
             _books = new List<Book>()
             {
-                new Book() {Id=1,Title="FirstTitle",Genre=_genres[0],Price=40.99 },
+               /* new Book() {Id=1,Title="FirstTitle",Genre=_genres[0],Price=40.99 },
                 new Book() {Id=2,Title="SecondTitle",Genre=_genres[1],Price=20.00 },
                 new Book() {Id=3,Title="ThirdTitle", Genre=_genres[2],Price=69.99, Description="Knife of Dunwall" },
 				new Book() {Id=4,Title="FourthTitle",Genre = _genres[3],Price=14.99 },
 				new Book() {Id=5,Title="FifthTitle",Genre = _genres[2],Price=74.99 },
 				new Book() {Id=6,Title="SixthTitle",Genre = _genres[0],Price=24.99 },
-				new Book() {Id=7,Title="SeventhTitle",Genre = _genres[3],Price=18.99 }
+				new Book() {Id=7,Title="SeventhTitle",Genre = _genres[3],Price=18.99 }*/
 			};
         }
 

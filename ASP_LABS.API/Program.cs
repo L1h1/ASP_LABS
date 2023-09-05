@@ -1,6 +1,7 @@
 using ASP_LABS.API.Data;
 using ASP_LABS.API.Services.BookService;
 using ASP_LABS.API.Services.GenreService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -18,7 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 
-
+builder.Services.AddHttpContextAccessor();
 
 var connStr = builder.Configuration.GetConnectionString("SqliteConnection");
 string dataDirectory = String.Empty;
@@ -46,8 +47,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseStaticFiles();
 
-await DbInitializer.SeedData(app);
+
+//await DbInitializer.SeedData(app);
 
 
 app.Run();

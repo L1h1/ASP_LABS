@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.API.Services.GenreService;
+using ASP_LABS.Domain.Models;
 
 namespace ASP_LABS.API.Controllers
 {
@@ -24,16 +25,10 @@ namespace ASP_LABS.API.Controllers
 
         // GET: api/Genre
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Genre>>> GetGenreSet()
+        public async Task<ResponseData<ListModel<Genre>>> GetGenreSet()
         {
             var response = await _service.GetGenreListAsync();
-            
-            if (!response.Success)
-            {
-                throw new Exception(response.ErrorMessage);
-            }
-
-            return response.Data;
+            return response;
         }
 /*
         // GET: api/Genre/5

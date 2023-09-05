@@ -9,6 +9,7 @@ using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.API.Services.BookService;
 using Azure;
+using ASP_LABS.Domain.Models;
 
 namespace ASP_LABS.API.Controllers
 {
@@ -18,83 +19,84 @@ namespace ASP_LABS.API.Controllers
     {
         private IBookService _service;
 
+
         public BookController(IBookService service)
-        {
+		{
             _service = service;
+			
         }
 
         // GET: api/Book/group/thriller/2/3
-        [HttpGet("group/{genre}/{page}/{pageSize}")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBookSet(string genre,int page,int pageSize)
+        [HttpGet("genre={genre}/page={page}/pageSize={pageSize=3}")]
+        public async Task<ResponseData<ListModel<Book>>> GetBookSet(string genre,int page,int pageSize)
         {
             var response = await _service.GetBookListAsync(genre,page,pageSize);
-			if (!response.Success)
-			{
-				return BadRequest(response.ErrorMessage);
-			}
-
-			return response.Data.Items;
+			return response;
         }
 
         // GET: api/Book/sample/5
-        [HttpGet("sample/{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        [HttpGet("id={id}")]
+        public async Task<ResponseData<Book>> GetBook(int id)
         {
             var response = await _service.GetBookByIdAsync(id);
-			if (!response.Success)
-			{
-				return BadRequest(response.ErrorMessage);
-			}
-			return response.Data;
-        }
+			return response;
+		}
 
 		// POST: api/Book
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPost]
-		public async Task<ActionResult<Book>> PostBook(Book book)
+		public async Task<ResponseData<Book>> PostBook([FromBody]Book book)
 		{
-			var response = await _service.CreateBookAsync(book);
-			if (!response.Success)
-			{
-				return BadRequest(response.ErrorMessage);
-			}
+			System.Diagnostics.Debug.WriteLine($"---------------------------------------------Entered PostBook {book.Title}");
+            var response = await _service.CreateBookAsync(book);
 
-			return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return response;
 		}
 
 		// PUT: api/Book/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPut("{id}")]
-		public async Task<IActionResult> PutBook(int id, Book book)
+		public async Task<ResponseData<Book>> PutBook(int id, [FromBody]Book book)
 		{
-			if (id != book.Id)
+			var response = new ResponseData<Book>();
+            System.Diagnostics.Debug.WriteLine($"---------------------------------------------Entered PutBook {book.Title}");
+
+            if (id != book.Id)
 			{
-				return BadRequest();
+
+				response.Success = false;
+				response.ErrorMessage = "book id conflict";
+				return response;
 			}
 
-			var response = await _service.UpdateBookAsync(id, book);
+			response = await _service.UpdateBookAsync(id, book);
 
-			if (!response.Success)
-			{
-				return BadRequest(response.ErrorMessage);
-			}
-
-			return NoContent();
+			return response;
 		}
 
 
 		// DELETE: api/Book/5
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteBook(int id)
+		public async Task<ResponseData<bool>> DeleteBook(int id)
 		{
-			var status = await _service.DeleteBookAsync(id);
-			if (!status.Success)
-			{
-				return NotFound();
-			}
-			
-			return NoContent();
+			var response = await _service.DeleteBookAsync(id);
+			return response;
 		}
+
+
+		// POST: api/Book/5
+		[HttpPost("{id}")]
+		public async Task<ActionResult<ResponseData<string>>> PostImage(int id,IFormFile formFile)
+		{
+			var response = await _service.SaveImageAsync(id, formFile);
+			if (response.Success)
+			{
+				return Ok(response);
+			}
+			return NotFound(response);
+		}
+
+
 
 	}
 }

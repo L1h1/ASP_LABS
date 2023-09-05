@@ -3,10 +3,6 @@
 	var request = ViewContext.HttpContext.Request;
 	var returnUrl = request.Path + request.QueryString.ToUriComponent();
 
-	string GetPath(string bookTitle)
-	{
-		return $"/images/{bookTitle}.jpg";
-	}
 
 }
 
@@ -32,10 +28,8 @@
 	{
 		<div class="col-md-4 g-5">
 			<div class="card" style="width: 18rem;">
-				<img src="@GetPath(element.Title)" class="card-img-top">
-				@{
-					System.Diagnostics.Debug.WriteLine(GetPath(element.Title));
-				}
+				<img src="@element.ImagePath" class="card-img-top">
+
 				<div class="card-body">
 					<h5 class="card-title">@element.Title</h5>
 					<p class="card-text">@element.Description</p>

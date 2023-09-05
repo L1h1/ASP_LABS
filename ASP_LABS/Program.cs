@@ -1,6 +1,9 @@
+using ASP_LABS.API.Data;
+using ASP_LABS.Models;
 using ASP_LABS.Services.BookService;
 using ASP_LABS.Services.GenreService;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +11,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-//Adding lab2 services
+/*//Adding lab2 services
 builder.Services.AddScoped<IGenreService,MemoryGenreService>();
 builder.Services.AddScoped<IBookService,MemoryBookService>();
+*/
 
+
+var uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
+
+
+builder.Services.AddHttpClient<IGenreService, ApiGenreService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
+builder.Services.AddHttpClient<IBookService, ApiBookService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -34,6 +46,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+app.MapControllerRoute(
+	name: "areas",
+	  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+	);
+app.MapRazorPages();
 
 
 app.Run();
