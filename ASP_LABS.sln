@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_LABS.Domain", "ASP_LABS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_LABS.API", "ASP_LABS.API\ASP_LABS.API.csproj", "{19B666F7-56F7-4AD0-8239-229B021A2710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_LABS.IdentityServer", "ASP_LABS.IdentityServer\ASP_LABS.IdentityServer.csproj", "{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_LABS.IdentityServer", "ASP_LABS.IdentityServer\ASP_LABS.IdentityServer.csproj", "{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

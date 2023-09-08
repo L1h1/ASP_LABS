@@ -9,6 +9,7 @@ using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.API.Services.GenreService;
 using ASP_LABS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.API.Controllers
 {
@@ -23,8 +24,8 @@ namespace ASP_LABS.API.Controllers
 			_service = service;
         }
 
-        // GET: api/Genre
-        [HttpGet]
+		// GET: api/Genre
+		[HttpGet]
         public async Task<ResponseData<ListModel<Genre>>> GetGenreSet()
         {
             var response = await _service.GetGenreListAsync();

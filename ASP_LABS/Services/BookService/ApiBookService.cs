@@ -2,8 +2,11 @@
 using ASP_LABS.Domain.Models;
 using ASP_LABS.Services.GenreService;
 using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using System.Data.SqlTypes;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,8 +20,9 @@ namespace ASP_LABS.Services.BookService
 		ILogger _logger;
 		string _pageSize;
 		JsonSerializerOptions _serializerOptions;
+		HttpContext _httpContext;
 
-		public ApiBookService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiGenreService> logger)
+		public ApiBookService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiGenreService> logger, IHttpContextAccessor httpContextAccessor)
 		{
 			_httpClient = httpClient;
 			_configuration = configuration;
@@ -30,18 +34,22 @@ namespace ASP_LABS.Services.BookService
 				PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 			};
 
+			_httpContext = httpContextAccessor.HttpContext;
 
 		}
 
 		public async Task DeleteBookAsync(int id)
 		{
+			var token = await _httpContext.GetTokenAsync("access_token");
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+			System.Diagnostics.Debug.WriteLine(token);
 
 			var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Book/");
 			urlString.Append($"{id}");
 			var response = await _httpClient.DeleteAsync(urlString.ToString());
 			if (!response.IsSuccessStatusCode)
 			{
-				_logger.LogError($"----->Книга с таким Id отсутствует. Error:{response.StatusCode.ToString()}");
+				_logger.LogError($"----->Книга с таким Id отсутствует. Error:{response.Headers}");
 			}
 		}
 
@@ -115,6 +123,9 @@ namespace ASP_LABS.Services.BookService
 		}
 		private async Task SaveImageAsync(int id, IFormFile image)
 		{
+			var token = await _httpContext.GetTokenAsync("access_token");
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
 			var request = new HttpRequestMessage
 			{
 				Method = HttpMethod.Post,
@@ -130,8 +141,10 @@ namespace ASP_LABS.Services.BookService
 
 		public async Task<ResponseData<Book>> CreateBookAsync(Book book, IFormFile? formFile)
 		{
+			var token = await _httpContext.GetTokenAsync("access_token");
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            var RequestUri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}Book");
+			var RequestUri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}Book");
 
             var response = await _httpClient.PostAsJsonAsync(RequestUri, book);
 
@@ -153,6 +166,8 @@ namespace ASP_LABS.Services.BookService
 
 		public async Task UpdateBookAsync(int id, Book book, IFormFile? formFile)
 		{
+			var token = await _httpContext.GetTokenAsync("access_token");
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
 			var RequestUri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}Book/{id}");
             var response = await _httpClient.PutAsJsonAsync(RequestUri, book, _serializerOptions);

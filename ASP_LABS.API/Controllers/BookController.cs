@@ -10,32 +10,35 @@ using ASP_LABS.Domain.Entities;
 using ASP_LABS.API.Services.BookService;
 using Azure;
 using ASP_LABS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.API.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize]
+	[Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
         private IBookService _service;
 
-
-        public BookController(IBookService service)
+        public BookController(IBookService service,HttpClient client)
 		{
             _service = service;
-			
         }
 
-        // GET: api/Book/group/thriller/2/3
-        [HttpGet("genre={genre}/page={page}/pageSize={pageSize=3}")]
+
+		[AllowAnonymous]
+		// GET: api/Book/group/thriller/2/3
+		[HttpGet("genre={genre}/page={page}/pageSize={pageSize=3}")]
         public async Task<ResponseData<ListModel<Book>>> GetBookSet(string genre,int page,int pageSize)
         {
             var response = await _service.GetBookListAsync(genre,page,pageSize);
 			return response;
         }
 
-        // GET: api/Book/sample/5
-        [HttpGet("id={id}")]
+		[AllowAnonymous]
+		// GET: api/Book/sample/5
+		[HttpGet("id={id}")]
         public async Task<ResponseData<Book>> GetBook(int id)
         {
             var response = await _service.GetBookByIdAsync(id);
@@ -73,7 +76,6 @@ namespace ASP_LABS.API.Controllers
 
 			return response;
 		}
-
 
 		// DELETE: api/Book/5
 		[HttpDelete("{id}")]

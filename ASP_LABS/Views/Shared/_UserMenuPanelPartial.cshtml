@@ -3,34 +3,53 @@
 *@
 
 @{
-
+	var username = User.Claims.FirstOrDefault(c =>
+				c.Type.Equals("Name", StringComparison.OrdinalIgnoreCase))
+				?.Value;
 }
 
-<a asp-controller="Cart" asp-action="Index" class="navbar-text ms-auto">
-                @await Component.InvokeAsync("Cart")
-                </a>
-                <div class="dropdown ms-4 nav-color">
-                    <button class="btn btn-secondary dropdown-toggle"
-                            type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        User@gmail.com
-                        <img src="/images/default-profile-picture.png" width="30"
-                             alt="User" class="rounded nav-color" />
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <span class="dropdown-item-text">
-                                <img src="/images/default-profile-picture.png"
-                                     width="50" alt="User" class="rounded" />
-                                user@gmail.com
-                            </span>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <button id="logout" class="nav-link btn btn-link text-dark" onclick="location.href='@Url.Action("LogOut", "Identity")'">
-                                Logout
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+	<a asp-controller="Cart" asp-action="Index" class="navbar-text ms-auto">
+		@await Component.InvokeAsync("Cart")
+	</a>
+	<div class="dropdown ms-4 nav-color">
+		<button class="btn btn-secondary dropdown-toggle"
+				type="button" id="dropdownMenuButton"
+				data-bs-toggle="dropdown"
+				aria-expanded="false">
+			@username
+			<img src="https://localhost:7003/avatar" width="30"
+				 alt="User" class="rounded nav-color" />
+		</button>
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<li>
+				<span class="dropdown-item-text">
+					<img src="https://localhost:7003/avatar"
+						 width="50" alt="User" class="rounded" />
+					@username
+				</span>
+			</li>
+			<li><hr class="dropdown-divider"></li>
+			<li>
+				<form method="post" asp-controller="Identity" asp-action="Logout">
+					<button type="submit" class="nav-link btn btn-link">Logout</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+}
+else
+{
+
+	<div class="navbar-textw ms-auto">
+		<button id="login" class="nav-link btn btn-link pull-right" onclick="location.href='@Url.Action("Login", "Identity")'">
+			Login
+		</button>
+
+	</div>
+
+
+}

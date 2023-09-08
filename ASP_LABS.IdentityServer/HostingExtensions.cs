@@ -12,15 +12,24 @@ namespace ASP_LABS.IdentityServer
 		public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
 		{
 			builder.Services.AddRazorPages();
+            builder.Services.AddControllers();
 
-			builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt
+				=> {
+                    opt.SignIn.RequireConfirmedAccount = false;
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequireLowercase = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireDigit = false;
+					opt.SignIn.RequireConfirmedAccount = false;
+                })
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			builder.Services
+            builder.Services
 				.AddIdentityServer(options =>
 				{
 					options.Events.RaiseErrorEvents = true;
@@ -59,9 +68,10 @@ namespace ASP_LABS.IdentityServer
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
-			app.UseStaticFiles();
+            app.MapControllers();
+            app.UseStaticFiles();
 			app.UseRouting();
+
 			app.UseIdentityServer();
 			app.UseAuthorization();
 

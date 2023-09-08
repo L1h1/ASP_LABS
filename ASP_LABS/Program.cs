@@ -2,6 +2,7 @@ using ASP_LABS.API.Data;
 using ASP_LABS.Models;
 using ASP_LABS.Services.BookService;
 using ASP_LABS.Services.GenreService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
+//L6
+builder.Services.AddAuthentication(opt =>
+{
+	opt.DefaultScheme = "cookie";
+	opt.DefaultChallengeScheme = "oidc";
+})
+.AddCookie("cookie")
+.AddOpenIdConnect("oidc", options =>
+{
+	options.Authority =
+	builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+	options.ClientId =
+	builder.Configuration["InteractiveServiceSettings:ClientId"];
+	options.ClientSecret =
+	builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+	// Получить Claims пользователя
+	options.GetClaimsFromUserInfoEndpoint = true;
+	options.ResponseType = "code";
+	options.ResponseMode = "query";
+	options.SaveTokens = true;
+});
 /*//Adding lab2 services
 builder.Services.AddScoped<IGenreService,MemoryGenreService>();
 builder.Services.AddScoped<IBookService,MemoryBookService>();
@@ -24,6 +46,12 @@ builder.Services.AddHttpClient<IGenreService, ApiGenreService>(opt => opt.BaseAd
 builder.Services.AddHttpClient<IBookService, ApiBookService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
+
+
+
+
+
 
 var app = builder.Build();
 
@@ -40,6 +68,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -54,4 +83,5 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 
+app.MapRazorPages().RequireAuthorization();
 app.Run();

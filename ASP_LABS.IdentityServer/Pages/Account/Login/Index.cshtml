@@ -48,10 +48,14 @@
                             <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                         </form>
                     </div>
+                    <div class="card-footer">
+                        <a asp-page="/Account/Register/Index"
+                       asp-route-returnurl="@Model.Input.ReturnUrl">Register as a new User</a>
+                    </div>
                 </div>
             </div>
         }
-
+        
         @if (Model.View.VisibleExternalProviders.Any())
         {
             <div class="col-sm-6">

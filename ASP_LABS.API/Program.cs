@@ -1,9 +1,13 @@
 using ASP_LABS.API.Data;
 using ASP_LABS.API.Services.BookService;
 using ASP_LABS.API.Services.GenreService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
 				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 ;
+
+//L6
+builder.Services
+.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(opt =>
+{
+	opt.Authority = builder
+	.Configuration
+	.GetSection("isUri").Value;
+	opt.IncludeErrorDetails = true;
+	opt.TokenValidationParameters.ValidateAudience = false;
+	opt.TokenValidationParameters.ValidateIssuer = false;
+	opt.TokenValidationParameters.ValidateLifetime = true;
+	opt.TokenValidationParameters.ValidateIssuerSigningKey = false;
+	opt.TokenValidationParameters.ValidTypes =
+	new[] { "at+jwt" };
+});
+builder.Services.AddHttpClient();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,6 +51,8 @@ connStr = String.Format(connStr, dataDirectory);
 
 var options = new DbContextOptionsBuilder<AppDbContext>().UseSqlite(connStr).Options;
 builder.Services.AddScoped<AppDbContext>(s => new AppDbContext(options));
+
+
 
 
 var app = builder.Build();
@@ -48,6 +73,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseStaticFiles();
+
+app.UseAuthentication();
+
+
+
+
 
 
 //await DbInitializer.SeedData(app);
