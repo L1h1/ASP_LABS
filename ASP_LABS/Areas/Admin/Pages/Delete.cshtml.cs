@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.Services.BookService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.Areas.Admin
 {
-    public class DeleteModel : PageModel
+	[Authorize]
+
+	public class DeleteModel : PageModel
     {
         private readonly IBookService _service;
 

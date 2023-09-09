@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.Services.BookService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.Areas.Admin
 {
-    public class DetailsModel : PageModel
+	[Authorize]
+
+	public class DetailsModel : PageModel
     {
         private readonly IBookService _service;
 

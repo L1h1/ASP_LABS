@@ -49,7 +49,7 @@ namespace ASP_LABS.Services.BookService
 			var response = await _httpClient.DeleteAsync(urlString.ToString());
 			if (!response.IsSuccessStatusCode)
 			{
-				_logger.LogError($"----->Книга с таким Id отсутствует. Error:{response.Headers}");
+				_logger.LogError($"----->Книга с таким Id отсутствует. Error:{response.StatusCode}");
 			}
 		}
 

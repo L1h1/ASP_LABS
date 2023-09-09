@@ -10,10 +10,13 @@ using ASP_LABS.Domain.Entities;
 using ASP_LABS.Services.BookService;
 using ASP_LABS.Services.GenreService;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.Areas.Admin
 {
-    public class EditModel : PageModel
+	[Authorize]
+
+	public class EditModel : PageModel
     {
         private readonly IBookService _service;
         private readonly IGenreService _genreService;

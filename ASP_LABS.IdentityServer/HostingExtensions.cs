@@ -68,7 +68,12 @@ namespace ASP_LABS.IdentityServer
 			{
 				app.UseDeveloperExceptionPage();
 			}
-            app.MapControllers();
+			app.UseCors(opt =>
+			{
+				opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+			});
+
+			app.MapControllers();
             app.UseStaticFiles();
 			app.UseRouting();
 

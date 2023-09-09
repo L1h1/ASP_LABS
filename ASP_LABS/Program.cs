@@ -32,6 +32,8 @@ builder.Services.AddAuthentication(opt =>
 	options.ResponseType = "code";
 	options.ResponseMode = "query";
 	options.SaveTokens = true;
+	options.Scope.Add("api.read");
+	options.Scope.Add("api.write");
 });
 /*//Adding lab2 services
 builder.Services.AddScoped<IGenreService,MemoryGenreService>();

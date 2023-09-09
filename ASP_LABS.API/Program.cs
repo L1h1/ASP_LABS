@@ -17,6 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 ;
 
+
 //L6
 builder.Services
 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -58,7 +59,10 @@ builder.Services.AddScoped<AppDbContext>(s => new AppDbContext(options));
 var app = builder.Build();
 
 
-
+app.UseCors(opt =>
+{
+	opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -68,7 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+
 
 app.MapControllers();
 
@@ -76,7 +80,7 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 
-
+app.UseAuthorization();
 
 
 

@@ -9,9 +9,11 @@ using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
 using ASP_LABS.Services.BookService;
 using ASP_LABS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP_LABS.Areas.Admin
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly IBookService _service;
