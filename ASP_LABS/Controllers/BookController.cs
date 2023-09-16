@@ -1,6 +1,9 @@
 ﻿using ASP_LABS.Services.BookService;
 using ASP_LABS.Services.GenreService;
 using Microsoft.AspNetCore.Mvc;
+using ASP_LABS.Extensions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Drawing.Printing;
 
 namespace ASP_LABS.Controllers
 {
@@ -15,7 +18,9 @@ namespace ASP_LABS.Controllers
             _genreService = genreService;
         }
 
-        [Route("{controller=Book}/{action=Index}/{genre}/{page=1}")]
+
+
+		[Route("{controller=Book}/{action=Index}/{genre}/{page=1}")]
         public async Task<ActionResult> Index(string genre,int page)
         {
             var bookResponse = await _bookService.GetBookListAsync(genre,page);
@@ -27,7 +32,23 @@ namespace ASP_LABS.Controllers
 
             if (!bookResponse.Success)
                 return NotFound(bookResponse.ErrorMessage);
+
+            if (Request.IsAjaxRequest())
+            {
+				return PartialView("_BooksPartial", bookResponse.Data);
+			}
+				
+
+
 			return View(bookResponse.Data);
         }
+
+        
+
+
+
     }
+
+
+   
 }
