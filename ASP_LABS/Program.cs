@@ -1,6 +1,8 @@
 using ASP_LABS.API.Data;
+using ASP_LABS.Domain.Entities;
 using ASP_LABS.Models;
 using ASP_LABS.Services.BookService;
+using ASP_LABS.Services.CartServices;
 using ASP_LABS.Services.GenreService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Routing;
@@ -50,8 +52,11 @@ builder.Services.AddHttpClient<IBookService, ApiBookService>(opt => opt.BaseAddr
 builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 
+builder.Services.AddScoped<Cart>(sp=>SessionCart.GetCart(sp));
 
 
 
@@ -72,6 +77,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -20,7 +20,7 @@ namespace ASP_LABS.Controllers
 
 
 
-		[Route("{controller=Book}/{action=Index}/{genre}/{page=1}")]
+		[Route("Catalog/{genre}/{page=1}")]
         public async Task<ActionResult> Index(string genre,int page)
         {
             var bookResponse = await _bookService.GetBookListAsync(genre,page);
