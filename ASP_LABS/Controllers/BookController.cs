@@ -23,23 +23,30 @@ namespace ASP_LABS.Controllers
 		[Route("Catalog/{genre}/{page=1}")]
         public async Task<ActionResult> Index(string genre,int page)
         {
-            var bookResponse = await _bookService.GetBookListAsync(genre,page);
             //список категорий
             var genreResponse = await _genreService.GetGenreListAsync();
+            if (!genreResponse.Success)
+            {
+                return NotFound(genreResponse.ErrorMessage);
+            }
             ViewBag.Genres = genreResponse.Data;
             //текущая категория
-            ViewBag.CurrentGenre = genre == "all" ? "Выберите жанр" : genreResponse.Data.Items.First(x=>x.NormalizedName==genre).Name; //костыль
+            ViewBag.CurrentGenre = genre == "all" ? "Выберите жанр" : genreResponse.Data.Items.First(x => x.NormalizedName == genre).Name; //костыль
 
-            if (!bookResponse.Success)
+
+
+            //список книг
+            var bookResponse = await _bookService.GetBookListAsync(genre,page);
+           if(!bookResponse.Success)
+            {
                 return NotFound(bookResponse.ErrorMessage);
+            }
 
             if (Request.IsAjaxRequest())
             {
 				return PartialView("_BooksPartial", bookResponse.Data);
 			}
 				
-
-
 			return View(bookResponse.Data);
         }
 

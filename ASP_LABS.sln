@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_LABS.API", "ASP_LABS.AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_LABS.IdentityServer", "ASP_LABS.IdentityServer\ASP_LABS.IdentityServer.csproj", "{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_LABS.Tests", "ASP_LABS.Tests\ASP_LABS.Tests.csproj", "{92F27A6B-008B-4E88-B0DC-C4FFE36C5CF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6BDA10F-0C59-45E4-B561-0D5A8F5458F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F27A6B-008B-4E88-B0DC-C4FFE36C5CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F27A6B-008B-4E88-B0DC-C4FFE36C5CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F27A6B-008B-4E88-B0DC-C4FFE36C5CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F27A6B-008B-4E88-B0DC-C4FFE36C5CF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
