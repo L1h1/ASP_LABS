@@ -1,5 +1,6 @@
 using ASP_LABS.API.Data;
 using ASP_LABS.Domain.Entities;
+using ASP_LABS.Logs;
 using ASP_LABS.Models;
 using ASP_LABS.Services.BookService;
 using ASP_LABS.Services.CartServices;
@@ -7,6 +8,8 @@ using ASP_LABS.Services.GenreService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +61,10 @@ builder.Services.AddSession();
 
 builder.Services.AddScoped<Cart>(sp=>SessionCart.GetCart(sp));
 
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning).CreateLogger();
 
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -74,6 +80,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSerilogRequestLogging(opts =>
+{
+	opts.GetLevel = LogHelper.ExcludeHealthChecks;
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
