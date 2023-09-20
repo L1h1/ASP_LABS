@@ -1,0 +1,49 @@
+﻿@page "/books"
+@page "/books/{category}"
+@using System.Text.RegularExpressions;
+
+@attribute [Authorize]
+@inject IDataService dataService;
+
+<CategorySelector SelectedGenre="@SelectedName" />
+<BookCatalog BookSelected="@FindBook"/>
+<Pagination Category="@Category" />
+<BookDetails SelectedBook="@SelectedBook"/>
+
+@code {
+	[Parameter]
+	public string? Category { get; set; }
+	public string? SelectedName { get; set; }
+	[Parameter]
+	public Book? SelectedBook { get; set; }
+
+	string ConvertDashToCamelCase(string input) =>
+	Regex.Replace(input, "-.", m => " " + m.Value.Substring(1));
+
+	protected override async Task OnInitializedAsync()
+	{
+		await dataService.GetCategoryListAsync();
+
+		if (Category == null)
+		{
+			Category = "all";
+		}
+
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+
+		SelectedName = ConvertDashToCamelCase(Category!);
+		await dataService.GetProductListAsync(Category);
+
+	}
+
+
+	public async void FindBook(int id)
+	{
+		SelectedBook = dataService.Books.First(b => b.Id == id);
+		await InvokeAsync(StateHasChanged);
+	}
+
+}

@@ -1,0 +1,36 @@
+﻿
+@inject IDataService dataService;
+
+
+<!-- Выбор жанра -->
+@if (dataService.Genres != null)
+{
+	<div class="dropdown">
+		<a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+			@SelectedGenre
+		</a>
+
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+			<li><a class="dropdown-item" href="/books/all">All</a></li>
+			@foreach (var genre in dataService.Genres)
+			{
+				<li><a class="dropdown-item" href="/books/@genre?.NormalizedName">@genre?.Name</a></li>
+			}
+		</ul>
+	</div>
+}
+
+
+@code {
+
+	[Parameter]
+	public string? SelectedGenre{ get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		await dataService.GetCategoryListAsync();
+
+
+
+	}
+}
+

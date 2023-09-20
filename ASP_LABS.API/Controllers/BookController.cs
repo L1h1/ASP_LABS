@@ -27,7 +27,7 @@ namespace ASP_LABS.API.Controllers
         }
 
 
-		[AllowAnonymous]
+		//[AllowAnonymous]
 		// GET: api/Book/group/thriller/2/3
 		[HttpGet("genre={genre}/page={page}/pageSize={pageSize=3}")]
         public async Task<ResponseData<ListModel<Book>>> GetBookSet(string genre,int page,int pageSize)
@@ -36,7 +36,7 @@ namespace ASP_LABS.API.Controllers
 			return response;
         }
 
-		[AllowAnonymous]
+		//[AllowAnonymous]
 		// GET: api/Book/sample/5
 		[HttpGet("id={id}")]
         public async Task<ResponseData<Book>> GetBook(int id)
