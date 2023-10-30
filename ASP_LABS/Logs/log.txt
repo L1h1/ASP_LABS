@@ -1,0 +1,14 @@
+2023-09-19 21:11:47.184 +03:00 [INF] HTTP GET /Cart/add/10 responded 302 in 136.0254 ms
+2023-09-19 21:11:47.635 +03:00 [INF] HTTP GET /Cart/add/10 responded 302 in 9.1141 ms
+2023-09-19 21:11:48.174 +03:00 [INF] HTTP GET /Cart/add/11 responded 302 in 7.0836 ms
+2023-09-19 21:11:48.594 +03:00 [INF] HTTP GET /Cart/add/12 responded 302 in 5.3353 ms
+2023-09-19 21:11:49.630 +03:00 [INF] HTTP GET /Cart/add/13 responded 302 in 5.6134 ms
+2023-09-19 21:11:50.734 +03:00 [INF] HTTP GET /Catalog/science-fiction responded 404 in 20.6040 ms
+2023-09-19 21:11:58.941 +03:00 [INF] HTTP GET /Catalog/science-fiction responded 404 in 6.7021 ms
+2023-09-19 21:13:10.607 +03:00 [INF] HTTP POST /Admin/Create responded 302 in 693.1214 ms
+2023-09-20 09:17:36.605 +03:00 [INF] HTTP GET /Cart/add/11 responded 302 in 114.8362 ms
+2023-09-20 09:17:38.595 +03:00 [INF] HTTP GET /Cart/add/12 responded 302 in 14.0441 ms
+2023-09-20 09:17:39.640 +03:00 [INF] HTTP GET /Cart/add/12 responded 302 in 10.7015 ms
+2023-09-20 09:32:19.733 +03:00 [INF] HTTP POST /Identity/Logout responded 302 in 953.3475 ms
+2023-09-20 12:17:32.074 +03:00 [ERR] -----> Данные не получены от сервера. Error:Unauthorized
+2023-09-20 12:17:32.116 +03:00 [INF] HTTP GET /Catalog/all responded 404 in 2390.2664 ms
